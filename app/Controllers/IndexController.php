@@ -80,6 +80,16 @@ class IndexController extends BaseController
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
+        if(!is_writable($folder = dirname($outfilePath)))
+        {
+            mkdir($folder, 0777, true) && chmod($folder, 0777);
+        }
+
+        if(!is_writable($folder))
+        {
+            throw new \Exception("The output folder $folder cannot be written too. Ensure the folder exists and is writable: mkdir $folder && chmod a+w $folder");
+        }
+
         $cmdArgs = "-infile $infileTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
 
         if($callback)
@@ -87,7 +97,7 @@ class IndexController extends BaseController
             $cmdArgs .= ' -callback ' . $callbackTmp;
         }
 
-        return $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
+        $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
 
         try{
             $this->execute($cmd);
@@ -102,6 +112,11 @@ class IndexController extends BaseController
             }
 
             throw $e;
+        }
+
+        if(!is_file($outfilePath))
+        {
+            throw new \Exception("File $outfilePath could not be created.");
         }
 
         return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
