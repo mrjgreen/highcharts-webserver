@@ -65,7 +65,7 @@ class IndexController extends BaseController
             $callbackTmp = $this->writeTempFile($callback);
         }
 
-        $webFilePath = '/charts/' . md5(uniqid('', true)) .'png';
+        $webFilePath = '/charts/' . md5(uniqid('', true)) . '.png';
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
@@ -76,7 +76,7 @@ class IndexController extends BaseController
             $cmdArgs .= ' -callback ' . $callbackTmp;
         }
 
-        return $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
+        $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
 
         try{
             $this->execute($cmd);
