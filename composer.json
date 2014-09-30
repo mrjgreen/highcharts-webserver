@@ -1,0 +1,14 @@
+{
+    "require" : {
+        "symfony/http-foundation" : "*",
+        "pimple/pimple" : "*",
+        "phroute/phroute" : "1.*",
+        "joegreen0991/config" : "1.*",
+        "joegreen0991/error" : "1.*"
+    },
+    "autoload" : {
+        "classmap" : [
+            "app/Controllers"
+        ]
+    }
+}
