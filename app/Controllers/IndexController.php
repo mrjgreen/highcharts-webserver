@@ -29,7 +29,14 @@ class IndexController extends BaseController
 
         $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
 
-        $filename = sha1(json_encode(array($callback, $safeInput))) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
+        if($id = $this->request->get('id'))
+        {
+            $filename = sha1($id) . '.png';
+        }
+        else
+        {
+            $filename = sha1(json_encode(array($callback, $safeInput))) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
+        }
 
         $webFilePath = '/charts/' . $filename;
 
