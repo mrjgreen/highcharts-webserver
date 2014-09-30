@@ -78,33 +78,31 @@ class IndexController extends BaseController
 
         $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
 
+        $filename = sha1(json_encode(array($callback, $safeInput))) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
+
+        $webFilePath = '/charts/' . $filename;
+
+        $outfilePath = app('paths')['public'] . $webFilePath;
+
+        if(!is_file($outfilePath))
+        {
+            $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
+        }
+
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
+    }
+
+    private function createFile($safeInput, $callback, $type, $scale, $width, $outfilePath)
+    {
+        $this->ensureOutputFolderIsWritable(dirname($outfilePath));
+
         $infileTmp = $this->writeTempFile($safeInput);
+
+        $cmdArgs = "-infile $infileTmp -constr $type -scale $scale  -outfile $outfilePath";
 
         if($callback)
         {
             $callbackTmp = $this->writeTempFile($callback);
-        }
-
-        $webFilePath = '/charts/';
-
-        $outfilePath = app('paths')['public'] . $webFilePath;
-
-        try{
-            if(!is_writable($outfilePath))
-            {
-                mkdir($outfilePath, 0777, true) && chmod($outfilePath, 0777);
-            }
-        }
-        catch(\Exception $e)
-        {
-            throw new \Exception("The output folder $outfilePath cannot be written to. Ensure the folder exists and is writable: mkdir $outfilePath && chmod a+w $outfilePath", 0, $e);
-        }
-
-
-        $cmdArgs = "-infile $infileTmp -constr $type -scale $scale";
-
-        if($callback)
-        {
             $cmdArgs .= ' -callback ' . $callbackTmp;
         }
 
@@ -113,17 +111,8 @@ class IndexController extends BaseController
             $cmdArgs .= ' -width ' . $width;
         }
 
-        $md5 = sha1(json_encode($safeInput)) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
-
-        $outfilePath .= $md5;
-        $webFilePath .= $md5;
-
-        $cmdArgs .= ' -outfile ' . $outfilePath;
-
-        $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
-
         try{
-            $this->execute($cmd);
+            $this->execute(self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs);
         }
         catch (\Exception $e)
         {
@@ -141,9 +130,20 @@ class IndexController extends BaseController
         {
             throw new \Exception("File $outfilePath could not be created.");
         }
+    }
 
-        return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
-
+    private function ensureOutputFolderIsWritable($folder)
+    {
+        try{
+            if(!is_writable($folder))
+            {
+                mkdir($folder, 0777, true) && chmod($folder, 0777);
+            }
+        }
+        catch(\Exception $e)
+        {
+            throw new \Exception("The output folder $folder cannot be written to. Ensure the folder exists and is writable: mkdir $folder && chmod a+w $folder", 0, $e);
+        }
     }
 
     private function execute($command)
