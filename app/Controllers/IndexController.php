@@ -85,7 +85,7 @@ class IndexController extends BaseController
             $callbackTmp = $this->writeTempFile($callback);
         }
 
-        $webFilePath = '/charts';
+        $webFilePath = '/charts/';
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
