@@ -23,7 +23,15 @@ class IndexController extends BaseController
 
         $callback = $this->request->get('callback');
 
-        $type = strtolower($this->request->get('constr')) === 'stockchart' ? 'StockChart' : 'Chart';
+        $valid = array(
+            'map'           => 'Map',
+            'stockchart'    => 'StockChart',
+            'chart'         => 'Chart'
+        );
+
+        $type = strtolower($this->request->get('constr'));
+
+        $type = isset($valid[$type]) ? $valid[$type] : 'Chart';
 
         $width = $this->prepareAndValidateWidth($this->request->get('width'));
 
