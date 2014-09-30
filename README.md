@@ -11,6 +11,10 @@ Install this PHP web application to handle requests and pass to phantomjs/highch
 ~~~
 git clone https://github.com/joegreen0991/highcharts-webserver /srv/web/highcharts-webserver
 /srv/web/highcharts-webserver/composer.phar install --working-dir /srv/web/highcharts-webserver
+
+#Create the output directory with correct permissions
+mkdir /srv/web/highcharts-webserver/public/charts
+chmod a+w /srv/web/highcharts-webserver/public/charts
 ~~~
 
 Then run the following command to download the highcharts files

@@ -50,7 +50,7 @@ class IndexController extends BaseController
         return json_decode($valid_json);
     }
 
-    public function postIndex()
+    public function anyIndex()
     {
         $input = $this->request->get('infile');
 
