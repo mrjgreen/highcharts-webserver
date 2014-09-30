@@ -42,9 +42,9 @@ http://178.62.2.88/?infile=%7B%22xAxis%22%3A+%7B%22categories%22%3A+%5B%22Jan%22
 ##NB. Filenames
 Currently the filename is generated from a SHA1 hash of the parsed infile/callback parameters along with the width/constr/scale parameters. THERE MAY BE HASH COLLISIONS.
 
-This server is not intended for open/free for all use. It is a very basic set up intended for internal "TRUSTED" users/sources.
+This server is not intended for open/free for all use. It is a very basic set up intended for internal "TRUSTED" users/sources, with the ability to write/delete/overwrite any generated charts/graphs
 
- > The source code can easily be altered to generate a unique filename for each request
+ > The source code could easily be altered to generate a unique filename for each request.
 
 ##Description of URL parameters
 
@@ -61,3 +61,5 @@ This server is not intended for open/free for all use. It is a very basic set up
 **constr**: Default Chart. The constructor name. Can be one of Chart or StockChart. This depends on whether you want to generate Highstock or basic Highcharts.
 
 **callback**: The callback is a function which will be called in the constructor of Highcharts to be executed on chart load. All code of the callback must be enclosed by a function. See this example of contents of the callback parameter:
+
+**delete**: If this argument is supplied, the filename that would be generated will instead be removed, if it exists

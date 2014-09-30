@@ -42,7 +42,14 @@ class IndexController extends BaseController
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
-        if(!is_file($outfilePath))
+        if($this->request->get('delete'))
+        {
+           if(is_file($outfilePath))
+           {
+               unlink($outfilePath);
+           }
+        }
+        elseif(!is_file($outfilePath))
         {
             $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
         }
