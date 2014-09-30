@@ -8,6 +8,41 @@ class IndexController extends BaseController
 
     const HIGHCHARTS_CONVERT_BIN = '/srv/highcharts/exporting-server/phantomjs/highcharts-convert.js';
 
+    public function anyIndex()
+    {
+        $input = $this->request->get('infile');
+
+        $useRaw = $this->request->get('useraw');
+
+        if(!$input || !($decoded = $useRaw ? json_decode($input) : $this->unquotedJsonDecode($input)))
+        {
+            throw new \InvalidArgumentException("Please supply a valid json_encoded 'infile' parameter");
+        }
+
+        $safeInput = json_encode($decoded);
+
+        $callback = $this->request->get('callback');
+
+        $type = strtolower($this->request->get('constr')) === 'stockchart' ? 'StockChart' : 'Chart';
+
+        $width = $this->prepareAndValidateWidth($this->request->get('width'));
+
+        $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
+
+        $filename = sha1(json_encode(array($callback, $safeInput))) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
+
+        $webFilePath = '/charts/' . $filename;
+
+        $outfilePath = app('paths')['public'] . $webFilePath;
+
+        if(!is_file($outfilePath))
+        {
+            $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
+        }
+
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
+    }
+
     private function prepareAndValidateWidth($width)
     {
         if(is_null($width))
@@ -55,41 +90,6 @@ class IndexController extends BaseController
         $valid_json = str_replace("'", '"', $valid_json);
 
         return json_decode($valid_json);
-    }
-
-    public function anyIndex()
-    {
-        $input = $this->request->get('infile');
-
-        $useRaw = $this->request->get('useraw');
-
-        if(!$input || !($decoded = $useRaw ? json_decode($input) : $this->unquotedJsonDecode($input)))
-        {
-            throw new \InvalidArgumentException("Please supply a valid json_encoded 'infile' parameter");
-        }
-
-        $safeInput = json_encode($decoded);
-
-        $callback = $this->request->get('callback');
-
-        $type = strtolower($this->request->get('constr')) === 'stockchart' ? 'StockChart' : 'Chart';
-
-        $width = $this->prepareAndValidateWidth($this->request->get('width'));
-
-        $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
-
-        $filename = sha1(json_encode(array($callback, $safeInput))) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
-
-        $webFilePath = '/charts/' . $filename;
-
-        $outfilePath = app('paths')['public'] . $webFilePath;
-
-        if(!is_file($outfilePath))
-        {
-            $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
-        }
-
-        return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
     }
 
     private function createFile($safeInput, $callback, $type, $scale, $width, $outfilePath)
