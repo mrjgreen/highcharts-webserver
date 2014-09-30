@@ -23,6 +23,17 @@ class IndexController extends BaseController
         return (int)$width;
     }
 
+    private function prepareAndValidateScale($scale)
+    {
+        if(is_numeric($scale) || $scale <= 0)
+        {
+            throw new \InvalidArgumentException("Please supply an numeric scale greater than 0");
+        }
+
+        return (float)$scale;
+    }
+
+
     private function writeTempFile($contents)
     {
         $tmpfname = tempnam(sys_get_temp_dir(), "highchart");
@@ -56,7 +67,7 @@ class IndexController extends BaseController
 
         $width = $this->prepareAndValidateWidth($this->request->get('width'));
 
-        $scale = 2.5;
+        $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
 
         $infileTmp      = $this->writeTempFile($safeInput);
 
