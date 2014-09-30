@@ -44,12 +44,17 @@ class IndexController extends BaseController
 
         if($this->request->get('delete'))
         {
-           if(is_file($outfilePath))
-           {
-               unlink($outfilePath);
-           }
+            if(is_file($outfilePath))
+            {
+                unlink($outfilePath);
+
+                return '1 file deleted';
+            }
+
+            return 'No file to delete';
         }
-        elseif(!is_file($outfilePath))
+
+        if(!is_file($outfilePath))
         {
             $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
         }
