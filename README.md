@@ -1,26 +1,34 @@
 ##Run a highcharts graph generation server
 
-For quick start, spin up a Cent OS 6.5 instance and install the correct puppet configs from here: https://github.com/joegreen0991/puppet/tree/master/puppet using the following bootstrap script in your home directory
+For quick start:
 
+* Spin up a Cent OS 6.5 instance
+* Install the puppet configs from here: https://github.com/joegreen0991/puppet/tree/master/puppet which installs/sets up:
+    * Nginx
+    * Phantomjs and dependencies
+    * PHP-FPM
+    * Tools and utils like nano/git
+    * IPTables rules for HTTP/SSH
+    * NTPd and sets UTC timezone
+    * Disables SELinux
+* Download the highcharts export library https://github.com/highslide-software/highcharts.com/tree/master/exporting-server/phantomjs
+* Download and install this PHP application to handle requests, pass to phantomjs/highcharts and redirect to generated chart
+
+Here is a handy copy and paste for all the above
 ~~~
+#Install the puppet configs using a bootstrap file
 bash -c "$(curl -fsSL http://git.io/1qTpDw)" -s highcharts
-~~~
 
-Install this PHP web application to handle requests and pass to phantomjs/highcharts
+#Install the highcharts library
+git clone https://github.com/highslide-software/highcharts.com /srv/highcharts
 
-~~~BASH
+#Install the PHP application
 git clone https://github.com/joegreen0991/highcharts-webserver /srv/web/highcharts-webserver
 /srv/web/highcharts-webserver/composer.phar install --working-dir /srv/web/highcharts-webserver
 
 #Create the output directory with correct permissions
 mkdir /srv/web/highcharts-webserver/public/charts
 chmod a+w /srv/web/highcharts-webserver/public/charts
-~~~
-
-Then run the following command to download the highcharts files from here https://github.com/highslide-software/highcharts.com/tree/master/exporting-server/phantomjs
-
-~~~BASH
-git clone https://github.com/highslide-software/highcharts.com /srv/highcharts
 ~~~
 
 And away you go!
