@@ -59,13 +59,22 @@ class IndexController extends BaseController
         $scale = 2.5;
 
         $infileTmp      = $this->writeTempFile($safeInput);
-        $callbackTmp      = $this->writeTempFile($callback);
+
+        if($callback)
+        {
+            $callbackTmp = $this->writeTempFile($callback);
+        }
 
         $webFilePath = '/charts/' . md5(uniqid('', true)) .'png';
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
-        $cmdArgs = "-infile $infileTmp -callback $callbackTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
+        $cmdArgs = "-infile $infileTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
+
+        if($callback)
+        {
+            $cmdArgs .= ' -callback ' . $callbackTmp;
+        }
 
         return $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
 
@@ -75,7 +84,11 @@ class IndexController extends BaseController
         catch (\Exception $e)
         {
             unlink($infileTmp);
-            unlink($callbackTmp);
+
+            if($callback)
+            {
+                unlink($callbackTmp);
+            }
 
             throw $e;
         }
