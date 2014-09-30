@@ -9,7 +9,7 @@ bash -c "$(curl -fsSL http://git.io/1qTpDw)" -s highcharts
 Install this PHP web application to handle requests and pass to phantomjs/highcharts
 
 ~~~
-git clone https://github.com/joegreen0991/highcharts-webserver /srv/web/highcharts
+git clone https://github.com/joegreen0991/highcharts-webserver /srv/web/highcharts-webserver
 /srv/web/highcharts/composer.phar install --working-dir /srv/web/highcharts
 ~~~
 
