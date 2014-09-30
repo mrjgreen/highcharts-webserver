@@ -67,7 +67,7 @@ class IndexController extends BaseController
 
         $cmdArgs = "-infile $infileTmp -callback $callbackTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
 
-        $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . $cmdArgs;
+        return $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . $cmdArgs;
 
         try{
             $this->execute($cmd);
