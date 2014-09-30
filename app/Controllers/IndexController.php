@@ -25,7 +25,7 @@ class IndexController extends BaseController
 
     private function prepareAndValidateScale($scale)
     {
-        if(is_numeric($scale) || $scale <= 0)
+        if(!is_numeric($scale) || $scale <= 0)
         {
             throw new \InvalidArgumentException("Please supply an numeric scale greater than 0");
         }
