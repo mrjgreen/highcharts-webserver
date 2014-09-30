@@ -85,23 +85,23 @@ class IndexController extends BaseController
             $callbackTmp = $this->writeTempFile($callback);
         }
 
-        $webFilePath = '/charts/' . md5(uniqid('', true)) . '.png';
+        $webFilePath = '/charts';
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
         try{
-            if(!is_writable($folder = dirname($outfilePath)))
+            if(!is_writable($outfilePath))
             {
-                mkdir($folder, 0777, true) && chmod($folder, 0777);
+                mkdir($outfilePath, 0777, true) && chmod($outfilePath, 0777);
             }
         }
         catch(\Exception $e)
         {
-            throw new \Exception("The output folder $folder cannot be written to. Ensure the folder exists and is writable: mkdir $folder && chmod a+w $folder", 0, $e);
+            throw new \Exception("The output folder $outfilePath cannot be written to. Ensure the folder exists and is writable: mkdir $outfilePath && chmod a+w $outfilePath", 0, $e);
         }
 
 
-        $cmdArgs = "-infile $infileTmp -constr $type -scale $scale -outfile $outfilePath";
+        $cmdArgs = "-infile $infileTmp -constr $type -scale $scale";
 
         if($callback)
         {
@@ -112,6 +112,13 @@ class IndexController extends BaseController
         {
             $cmdArgs .= ' -width ' . $width;
         }
+
+        $md5 = sha1($cmdArgs) . '.png';
+
+        $outfilePath .= $md5;
+        $webFilePath .= $md5;
+
+        $cmdArgs .= ' -outfile ' . $outfilePath;
 
         $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
 
