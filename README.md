@@ -62,4 +62,4 @@ This server is not intended for open/free for all use. It is a very basic set up
 
 **callback**: The callback is a function which will be called in the constructor of Highcharts to be executed on chart load. All code of the callback must be enclosed by a function. See this example of contents of the callback parameter:
 
-**delete**: If this argument is supplied, the filename that would be generated based on the above parameters will instead be removed, if it exists
+**delete**: If this argument is supplied or if the request method is DELETE, the filename that would be generated based on the above parameters will instead be removed, if it exists
