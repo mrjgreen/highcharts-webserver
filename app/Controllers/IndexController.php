@@ -76,7 +76,7 @@ class IndexController extends BaseController
             $cmdArgs .= ' -callback ' . $callbackTmp;
         }
 
-        $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
+        return $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
 
         try{
             $this->execute($cmd);
