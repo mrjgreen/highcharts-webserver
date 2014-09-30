@@ -17,7 +17,7 @@ mkdir /srv/web/highcharts-webserver/public/charts
 chmod a+w /srv/web/highcharts-webserver/public/charts
 ~~~
 
-Then run the following command to download the highcharts files
+Then run the following command to download the highcharts files from here https://github.com/highslide-software/highcharts.com/tree/master/exporting-server/phantomjs
 
 ~~~
 git clone https://github.com/highslide-software/highcharts.com /srv/highcharts
