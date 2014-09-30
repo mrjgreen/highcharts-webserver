@@ -24,7 +24,7 @@ class IndexController extends BaseController
         $callback = $this->request->get('callback');
 
         $valid = array(
-            'map'           => 'Map',
+            //'map'           => 'Map',
             'stockchart'    => 'StockChart',
             'chart'         => 'Chart'
         );
