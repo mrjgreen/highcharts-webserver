@@ -10,6 +10,11 @@ class IndexController extends BaseController
 
     private function prepareAndValidateWidth($width)
     {
+        if(is_null($width))
+        {
+            return;
+        }
+
         if((int)$width != $width || $width <= 0)
         {
             throw new \InvalidArgumentException("Please supply an integer width greater than 0");
@@ -47,6 +52,8 @@ class IndexController extends BaseController
     {
         $valid_json = preg_replace('/([{\[,])\s*([a-zA-Z0-9_]+?):/', '$1"$2":', $s);
 
+        $valid_json = str_replace("'", '"', $valid_json);
+
         return json_decode($valid_json);
     }
 
@@ -54,7 +61,9 @@ class IndexController extends BaseController
     {
         $input = $this->request->get('infile');
 
-        if(!$input || !($decoded = $this->unquotedJsonDecode($input)))
+        $useRaw = $this->request->get('useraw');
+
+        if(!$input || !($decoded = $useRaw ? json_decode($input) : $this->unquotedJsonDecode($input)))
         {
             throw new \InvalidArgumentException("Please supply a valid json_encoded 'infile' parameter");
         }
@@ -69,7 +78,7 @@ class IndexController extends BaseController
 
         $scale = $this->prepareAndValidateScale($this->request->get('scale', 2.5));
 
-        $infileTmp      = $this->writeTempFile($safeInput);
+        $infileTmp = $this->writeTempFile($safeInput);
 
         if($callback)
         {
@@ -92,11 +101,16 @@ class IndexController extends BaseController
         }
 
 
-        $cmdArgs = "-infile $infileTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
+        $cmdArgs = "-infile $infileTmp -constr $type -scale $scale -outfile $outfilePath";
 
         if($callback)
         {
             $cmdArgs .= ' -callback ' . $callbackTmp;
+        }
+
+        if($width)
+        {
+            $cmdArgs .= ' -width ' . $width;
         }
 
         $cmd = self::PHANTOM_JS_BINARY . ' ' . self::HIGHCHARTS_CONVERT_BIN . ' ' . $cmdArgs;
