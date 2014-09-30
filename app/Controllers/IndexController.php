@@ -113,7 +113,7 @@ class IndexController extends BaseController
             $cmdArgs .= ' -width ' . $width;
         }
 
-        $md5 = sha1($cmdArgs) . '.png';
+        $md5 = sha1(json_encode($safeInput)) . '_' . strtolower($type) .  '_s' . $scale . '_w' . $width . '.png';
 
         $outfilePath .= $md5;
         $webFilePath .= $md5;
