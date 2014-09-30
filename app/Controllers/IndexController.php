@@ -80,15 +80,17 @@ class IndexController extends BaseController
 
         $outfilePath = app('paths')['public'] . $webFilePath;
 
-        if(!is_writable($folder = dirname($outfilePath)))
+        try{
+            if(!is_writable($folder = dirname($outfilePath)))
+            {
+                mkdir($folder, 0777, true) && chmod($folder, 0777);
+            }
+        }
+        catch(\Exception $e)
         {
-            mkdir($folder, 0777, true) && chmod($folder, 0777);
+            throw new \Exception("The output folder $folder cannot be written to. Ensure the folder exists and is writable: mkdir $folder && chmod a+w $folder", 0, $e);
         }
 
-        if(!is_writable($folder))
-        {
-            throw new \Exception("The output folder $folder cannot be written too. Ensure the folder exists and is writable: mkdir $folder && chmod a+w $folder");
-        }
 
         $cmdArgs = "-infile $infileTmp -constr $type -width $width -scale $scale -outfile $outfilePath";
 
