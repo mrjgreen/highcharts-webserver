@@ -42,9 +42,9 @@ http://178.62.2.88/?infile=%7B%22xAxis%22%3A+%7B%22categories%22%3A+%5B%22Jan%22
 ##NB. Filenames
 Currently the filename is generated from a SHA1 hash of the parsed infile/callback parameters along with the width/constr/scale parameters. THERE MAY BE HASH COLLISIONS.
 
-This server is not intended for open/free for all use. It is a very basic set up intended for internal "TRUSTED" users/sources, with the ability to write/delete/overwrite any generated charts/graphs
+This code is not intended to run with public access. It is a very basic set up intended for internal "trusted" users, with the ability to write/delete/overwrite any generated charts/graphs
 
- > The source code could easily be altered to generate a unique filename for each request.
+ > The source code could easily be altered to add a user api key with privileges based on folder names etc.. and generate a unique filename for each request.
 
 ##Description of URL parameters
 
@@ -52,7 +52,7 @@ This server is not intended for open/free for all use. It is a very basic set up
 
 **id**: A unique identifier for the chart. If you supply this, we will sha1 encode the supplied value to generate the filename. You can supply the same id again and to overwrite the previous version.
 
-**useraw**: Force the script to use the JSON as given, without trying to correct incorrect quotes.
+**useraw**: Force the script to use the JSON as given, without trying to correct incorrectly quoted JSON keys.
 
 **scale**: Default 2.5. To set the zoomFactor of the page rendered by PhantomJS. For example, if the chart.width option in the chart configuration is set to 600 and the scale is set to 2, the output raster image will have a pixel width of 1200. So this is a convenient way of increasing the resolution without decreasing the font size and line widths in the chart. This is ignored if the width parameter is set.
 
