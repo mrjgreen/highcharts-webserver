@@ -67,6 +67,11 @@ class IndexController extends BaseController
             $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
         }
 
+        if($this->request->get('noredirect'))
+        {
+            return $webFilePath
+        }
+        
         return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
     }
 
