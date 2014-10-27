@@ -50,6 +50,8 @@ This code is not intended to run with public access. It is a very basic set up i
 
 **infile**: The highcharts JSON configuration to convert. The script will try to fix unquoted keys and single quotes, which may have undesired effects. See `useraw` below.
 
+**noredirect**: Return the url of the generated image rather than a 302 redirect response
+
 **id**: A unique identifier for the chart. If you supply this, we will sha1 encode the supplied value to generate the filename. You can supply the same id again and to overwrite the previous version.
 
 **useraw**: Force the script to use the JSON as given, without trying to correct incorrectly quoted JSON keys.
