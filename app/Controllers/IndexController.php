@@ -69,7 +69,7 @@ class IndexController extends BaseController
 
         if($this->request->get('noredirect'))
         {
-            return $webFilePath
+            return $webFilePath;
         }
         
         return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
