@@ -77,6 +77,7 @@ class IndexController extends BaseController
                 $this->request->get('aws.bucket'),
                 $this->request->get('aws.key'),
                 $this->request->get('aws.secret'),
+                $this->request->get('aws.region'),
                 $this->request->get('aws.prefix')
             );
         }
@@ -89,11 +90,12 @@ class IndexController extends BaseController
         return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
     }
 
-    private function sendToS3($path, $awsBucket, $awsKey, $awsSecret, $awsPrefix)
+    private function sendToS3($path, $awsBucket, $awsKey, $awsSecret, $awsRegion, $awsPrefix)
     {
         $client = S3Client::factory(array(
             'key'    => $awsKey,
             'secret' => $awsSecret,
+            'region' => $awsRegion
         ));
 
         $s3Filesystem = new Filesystem(new Adapter($client, $awsBucket, $awsPrefix));
