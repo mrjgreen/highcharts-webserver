@@ -1,4 +1,7 @@
 <?php
+use Aws\S3\S3Client;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\AwsS3 as Adapter;
 
 class IndexController extends BaseController
 {
@@ -67,12 +70,39 @@ class IndexController extends BaseController
             $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
         }
 
+        if($this->request->get('aws.key'))
+        {
+            $webFilePath = $this->sendToS3(
+                $webFilePath,
+                $this->request->get('aws.bucket'),
+                $this->request->get('aws.key'),
+                $this->request->get('aws.secret'),
+                $this->request->get('aws.prefix')
+            );
+        }
+
         if($this->request->get('noredirect'))
         {
             return $webFilePath;
         }
         
         return new \Symfony\Component\HttpFoundation\RedirectResponse($webFilePath);
+    }
+
+    private function sendToS3($path, $awsBucket, $awsKey, $awsSecret, $awsPrefix)
+    {
+        $client = S3Client::factory(array(
+            'key'    => $awsKey,
+            'secret' => $awsSecret,
+        ));
+
+        $s3Filesystem = new Filesystem(new Adapter($client, $awsBucket, $awsPrefix));
+
+        $objectName = basename($path);
+
+        $s3Filesystem->write($objectName, file_get_contents($path));
+
+        return sprintf('https://%s.s3.amazonaws.com/%s%s', $awsBucket, $awsPrefix, $objectName);
     }
 
     private function prepareAndValidateWidth($width)
