@@ -103,7 +103,7 @@ class IndexController extends BaseController
         $objectName = basename($path);
 
         $s3Filesystem->write($objectName, file_get_contents($path), array(
-            'visibility' => S3Adapter::VISIBILITY_PUBLIC),
+            'visibility' => S3Adapter::VISIBILITY_PUBLIC,
         ));
 
         return sprintf('http://%s.s3.amazonaws.com/%s%s', $awsBucket, $awsPrefix, $objectName);
