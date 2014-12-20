@@ -104,7 +104,7 @@ class IndexController extends BaseController
 
         $s3Filesystem->write($objectName, file_get_contents($path));
 
-        return sprintf('https://%s.s3.amazonaws.com/%s%s', $awsBucket, $awsPrefix, $objectName);
+        return sprintf('http://%s.s3.amazonaws.com/%s%s', $awsBucket, $awsPrefix, $objectName);
     }
 
     private function prepareAndValidateWidth($width)
