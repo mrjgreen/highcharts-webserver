@@ -70,15 +70,15 @@ class IndexController extends BaseController
             $this->createFile($safeInput, $callback, $type, $scale, $width, $outfilePath);
         }
 
-        if($this->request->get('aws.key'))
+        if($this->request->get('awskey'))
         {
             $webFilePath = $this->sendToS3(
-                $webFilePath,
-                $this->request->get('aws.bucket'),
-                $this->request->get('aws.key'),
-                $this->request->get('aws.secret'),
-                $this->request->get('aws.region'),
-                $this->request->get('aws.prefix')
+                $outfilePath,
+                $this->request->get('awsbucket'),
+                $this->request->get('awskey'),
+                $this->request->get('awssecret'),
+                $this->request->get('awsregion'),
+                $this->request->get('awsprefix')
             );
         }
 
