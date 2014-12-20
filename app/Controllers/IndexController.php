@@ -1,7 +1,7 @@
 <?php
 use Aws\S3\S3Client;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\AwsS3 as Adapter;
+use League\Flysystem\Adapter\AwsS3 as S3Adapter;
 
 class IndexController extends BaseController
 {
@@ -98,11 +98,13 @@ class IndexController extends BaseController
             'region' => $awsRegion
         ));
 
-        $s3Filesystem = new Filesystem(new Adapter($client, $awsBucket, $awsPrefix));
+        $s3Filesystem = new Filesystem(new S3Adapter($client, $awsBucket, $awsPrefix));
 
         $objectName = basename($path);
 
-        $s3Filesystem->write($objectName, file_get_contents($path));
+        $s3Filesystem->write($objectName, file_get_contents($path), array(
+            'visibility' => S3Adapter::VISIBILITY_PUBLIC),
+        ));
 
         return sprintf('http://%s.s3.amazonaws.com/%s%s', $awsBucket, $awsPrefix, $objectName);
     }
