@@ -102,6 +102,11 @@ class IndexController extends BaseController
 
         $objectName = basename($path);
 
+        if($s3Filesystem->has($objectName))
+        {
+            $s3Filesystem->delete($objectName);
+        }
+        
         $s3Filesystem->write($objectName, file_get_contents($path), array(
             'visibility' => S3Adapter::VISIBILITY_PUBLIC,
         ));
