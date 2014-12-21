@@ -50,7 +50,7 @@ class HighchartsCreator
 
     private function getTempFile($contents = null)
     {
-        $tmpFile = tempnam(sys_get_temp_dir(), "highchart");
+        $tmpFile = sys_get_temp_dir() . '/highchart' . uniqid();
 
         if(!is_null($contents)) file_put_contents($tmpFile, $contents);
 
