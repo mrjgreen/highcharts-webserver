@@ -48,7 +48,7 @@ $app['request'] = function()
 
 $app['router'] = new Phroute\RouteCollector();
 
-$app['router']->controller('/', 'IndexController');
+$app['router']->controller('/', 'Controllers\IndexController');
 
 $response = (new Phroute\Dispatcher($app['router']))
     ->dispatch($app['request']->getMethod(), $app['request']->getPathInfo());
