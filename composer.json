@@ -6,7 +6,8 @@
         "joegreen0991/config" : "1.*",
         "joegreen0991/error" : "1.*",
         "league/flysystem": "~0.5",
-        "aws/aws-sdk-php": "~2.7"
+        "aws/aws-sdk-php": "~2.7",
+        "symfony/process": "~2.6"
     },
     "autoload" : {
         "classmap" : [

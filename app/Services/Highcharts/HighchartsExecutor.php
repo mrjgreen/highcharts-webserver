@@ -1,5 +1,7 @@
 <?php namespace Services\Highcharts;
 
+use Symfony\Component\Process\Process;
+
 class HighchartsCreator
 {
     const PHANTOM_JS_BINARY = '/usr/local/bin/phantomjs';
@@ -59,11 +61,8 @@ class HighchartsCreator
 
     private function execute($command)
     {
-        $lastLine = exec($command, $output, $returnVar);
+        $process = new Process($command);
 
-        if($returnVar)
-        {
-            throw new \Exception("Exec returned status: $returnVar with message: '$lastLine'");
-        }
+        $process->mustRun();
     }
 }
