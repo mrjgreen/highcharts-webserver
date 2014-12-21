@@ -83,9 +83,7 @@ class IndexController extends BaseController
             return new S3($client, $this->request->get('awsbucket'), $this->request->get('awsprefix'));
         }
 
-        $localFolder = '/charts/';
-
-        return new Local(app('paths')['public'] . $localFolder, $localFolder);
+        return new Local(app('paths')['public'], 'charts/');
     }
 
     /**

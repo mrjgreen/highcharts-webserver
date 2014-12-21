@@ -10,17 +10,17 @@ class Local implements OutputInterface
     /**
      * @var string
      */
-    private $webDir;
+    private $subFolder;
 
     /**
-     * @param $outputDir
      * @param $webDir
+     * @param $subFolder
      */
-    public function __construct($outputDir, $webDir)
+    public function __construct($webDir, $subFolder)
     {
-        $this->outputDir = rtrim($outputDir, '/') . '/';
+        $this->subFolder = '/' . trim($subFolder, '/') . '/';
 
-        $this->webDir = rtrim($webDir, '/') . '/';
+        $this->outputDir = rtrim($webDir, '/') . $this->subFolder;
     }
 
     /**
@@ -41,7 +41,7 @@ class Local implements OutputInterface
      */
     public function getWebUrl($outputFile)
     {
-        return $this->webDir . $outputFile;
+        return $this->subFolder . $outputFile;
     }
 
     /**
