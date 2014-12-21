@@ -2,7 +2,7 @@
 
 class InputConfig
 {
-    const FILE_EXTENSION = '.png';
+    const FILE_EXTENSION = 'png';
 
     const MAX_WIDTH = 10000;
 
@@ -45,12 +45,17 @@ class InputConfig
     {
         if($this->id)
         {
-            return sha1($this->id) . self::FILE_EXTENSION;
+            return sha1($this->id) . '.' . self::FILE_EXTENSION;
         }
 
         $hash = sha1(json_encode(array($this->callback, $this->json)));
 
-        return $hash . '_' . strtolower($this->constructor) .  '_s' . $this->scale . '_w' . $this->width . self::FILE_EXTENSION;
+        return $hash . '_' . strtolower($this->constructor) .  '_s' . $this->scale . '_w' . $this->width . '.' . self::FILE_EXTENSION;
+    }
+
+    public function getExtension()
+    {
+        return self::FILE_EXTENSION;
     }
 
     private function prepareAndValidateWidth($width)

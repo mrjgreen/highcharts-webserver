@@ -8,7 +8,7 @@ class HighchartsCreator
 
     public function create(InputConfig $inputConfig)
     {
-        $outfilePath = $this->getTempFile();
+        $outfilePath = $this->getTempFile() . '.' . $inputConfig->getExtension();
 
         $infileTmp = $this->getTempFile($inputConfig->json);
 
