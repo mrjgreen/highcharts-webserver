@@ -80,7 +80,7 @@ class IndexController extends BaseController
                 'region' => $this->request->get('awsregion'),
             ));
 
-            return new S3($client, $this->request->get('awsbucket'), $this->request->get('awsregion'));
+            return new S3($client, $this->request->get('awsbucket'), $this->request->get('awsprefix'));
         }
 
         $localFolder = '/charts/';
