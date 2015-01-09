@@ -23,7 +23,7 @@ bash -c "$(curl -fsSL http://git.io/1qTpDw)" -s highcharts
 git clone https://github.com/highslide-software/highcharts.com /srv/highcharts
 
 #Install the PHP application
-git clone https://github.com/joegreen0991/highcharts-webserver /srv/web/highcharts-webserver
+git clone https://github.com/mrjgreen/highcharts-webserver /srv/web/highcharts-webserver
 /srv/web/highcharts-webserver/composer.phar install --working-dir /srv/web/highcharts-webserver
 
 #Create the output directory with correct permissions
