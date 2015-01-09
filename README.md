@@ -3,7 +3,7 @@
 For quick start:
 
 * Spin up a Cent OS 6.5 instance
-* Install the puppet configs from here: https://github.com/joegreen0991/puppet/tree/master/puppet which installs/sets up:
+* Install the puppet configs from here: https://github.com/mrjgreen/puppet/tree/master/puppet which installs/sets up:
     * Nginx
     * Phantomjs and dependencies
     * PHP-FPM
