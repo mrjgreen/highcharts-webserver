@@ -71,7 +71,11 @@ This code is not intended to run with public access. It is a very basic set up i
 Set the following parameters to automatically push charts to s3 instead of storing locally
 
 **awskey**: Your amazon api key
+
 **awssecret**: Your amazon api secret
+
 **awsbucket**: The amazon bucket to push to
+
 **awsregion**: The region your bucket is in
+
 **awsprefix**: A string prefix to prefix the object name with (optional)
